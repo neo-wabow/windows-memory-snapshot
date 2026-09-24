@@ -1,0 +1,9 @@
+{
+  "checkIntervalSeconds": 30,
+  "warningPercent": 15,
+  "criticalPercent": 10,
+  "criticalAvailableGB": 4,
+  "severePercent": 5,
+  "recoveryPercent": 20,
+  "snapshotCooldownMinutes": 10
+}
