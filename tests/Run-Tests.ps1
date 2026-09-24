@@ -152,4 +152,15 @@ try {
     if (Test-Path -LiteralPath $testDirectory) { Remove-Item -LiteralPath $testDirectory -Recurse -Force }
 }
 
+function Get-MemorySample { throw 'simulated memory check failure' }
+$failedOnce = $false
+$testDirectory = Join-Path ([System.IO.Path]::GetTempPath()) ('MemorySnapshotOnce-' + [guid]::NewGuid().ToString('N'))
+try {
+    try { Start-Monitor $config $testDirectory -SingleCheck }
+    catch { $failedOnce = $true }
+    Assert-True $failedOnce 'Single-check mode reports a failed memory check'
+} finally {
+    if (Test-Path -LiteralPath $testDirectory) { Remove-Item -LiteralPath $testDirectory -Recurse -Force }
+}
+
 Write-Host "PASS: $script:Count assertions"

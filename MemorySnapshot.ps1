@@ -455,8 +455,14 @@ function Start-Monitor {
                     Write-Warning "Snapshot $level could not be saved: $($_.Exception.Message)"
                 }
             }
-        } catch { Write-Warning "Memory check failed: $($_.Exception.Message)" }
-        if ($SingleCheck) { break }
+        } catch {
+            if ($SingleCheck) { throw }
+            Write-Warning "Memory check failed: $($_.Exception.Message)"
+        }
+        if ($SingleCheck) {
+            Write-Host 'Memory check completed.'
+            break
+        }
         $remainingMs = [math]::Ceiling(([double]$Config.checkIntervalSeconds - ((Get-Date) - $checkStarted).TotalSeconds) * 1000)
         if ($remainingMs -gt 0) { Start-Sleep -Milliseconds ([int]$remainingMs) }
     }
