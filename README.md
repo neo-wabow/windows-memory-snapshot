@@ -94,6 +94,8 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tests\Run-Tests.ps1
 
 測試涵蓋門檻、cooldown、Recovery、缺少 WSL／Docker、單項擷取失敗、外部命令 timeout 及靜態掃描。真實 Docker／WSL 的輸出、非 Administrator 權限和 Ctrl+C 仍需在目標 Windows 電腦做一次實機 smoke test；步驟見 `tests/Windows-Smoke-Test.md`。
 
+GitHub Actions 也會在 Windows 執行上述測試，分別使用 Windows PowerShell 5.1 與 PowerShell 7，並執行一次真實的 Windows 記憶體檢查。
+
 ## 授權
 
 MIT，見 `LICENSE`。

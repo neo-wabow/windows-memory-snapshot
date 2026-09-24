@@ -1,0 +1,27 @@
+name: Windows validation
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Unit and parser checks (Windows PowerShell 5.1)
+        shell: powershell
+        run: .\tests\Run-Tests.ps1
+
+      - name: Unit and parser checks (PowerShell 7)
+        shell: pwsh
+        run: .\tests\Run-Tests.ps1
+
+      - name: One real Windows memory check
+        shell: powershell
+        run: .\MemorySnapshot.ps1 -Once -OutputDirectory (Join-Path $env:RUNNER_TEMP 'memory-snapshot-smoke')

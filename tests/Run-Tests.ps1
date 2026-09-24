@@ -82,6 +82,12 @@ Assert-True ($source -match 'npipe:////\./pipe/docker_engine' -and $source -matc
 $engine = (Get-Process -Id $PID).Path
 $timed = Invoke-LocalCommand $engine @('-NoProfile', '-Command', 'Start-Sleep -Seconds 3') 1
 Assert-True (-not $timed.Ok -and $timed.Error -match 'timed out') 'External command returns after timeout'
+foreach ($key in @($script:PendingCommands.Keys)) {
+    $child = $script:PendingCommands[$key]
+    Assert-True ($child.WaitForExit(5000)) 'Timed-out test child eventually exits without termination'
+    $child.Dispose()
+    $script:PendingCommands.Remove($key)
+}
 
 # A missing optional CLI must return a status rather than fail the snapshot.
 function Get-Command {
